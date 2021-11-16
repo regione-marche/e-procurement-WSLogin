@@ -1,0 +1,85 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Servizio di Login e utilizzo JWT",
+    "version" : "1.0.0",
+    "title" : "WSLogin"
+  },
+  "tags" : [ {
+    "name" : "Account"
+  } ],
+  "paths" : {
+    "/Account/LoginPubblica" : {
+      "post" : {
+        "tags" : [ "Account" ],
+        "summary" : "Verifica le credenziali per l'accesso al servizio di pubblicazione",
+        "description" : "Ritorna l'esito della verifica delle credenziali",
+        "operationId" : "AccountRestService.loginPubblica",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "username",
+          "in" : "formData",
+          "description" : "Username utente",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "password",
+          "in" : "formData",
+          "description" : "Password utente",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "clientKey",
+          "in" : "formData",
+          "description" : "Client/Application key",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "clientId",
+          "in" : "formData",
+          "description" : "Client/Application Id",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operazione effettuata con successo",
+            "schema" : {
+              "$ref" : "#/definitions/LoginResult"
+            }
+          },
+          "400" : {
+            "description" : "Controlli falliti sui parametri in input (si veda l'attributo error della risposta)"
+          },
+          "404" : {
+            "description" : "L'utente richiesto non è stato trovato (si veda l'attributo error della risposta)"
+          },
+          "500" : {
+            "description" : "Errori durante l'esecuzione dell'operazione (si veda l'attributo error della risposta)"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "LoginResult" : {
+      "type" : "object",
+      "properties" : {
+        "esito" : {
+          "type" : "boolean",
+          "description" : "Risultato operazione di accesso al servizio di pubblicazione"
+        },
+        "error" : {
+          "type" : "string",
+          "description" : "Eventuale messaggio di errore in caso di operazione fallita"
+        },
+        "token" : {
+          "type" : "string",
+          "description" : "Se le credenzaili sono corrette questo token è valorizzato"
+        }
+      },
+      "description" : "Contenitore per il risultato dell'operazione di accesso al servizio di pubblicazione"
+    }
+  }
+}
