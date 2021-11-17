@@ -1,0 +1,87 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="it.maggioli.eldasoft.wslogin.dao.AccountMapper">
+
+    <resultMap id="accountMap" type="accountresult">
+    	<id column="syscon" property="id" />
+    	<result column="syslogin" property="username" />
+        <result column="syspwd" property="password" />
+        <result column="sysute" property="nome" />
+        <result column="email" property="email" />
+        <result column="syscf" property="codiceFiscale" />
+        <result column="sysdisab" property="sysdisab" />
+        <result column="sysab3" property="ruolo" />
+        <result column="syspwbou" property="syspwbou" />
+    </resultMap>   
+	
+	<resultMap id="profiloMap" type="profiloentry">
+    	<result column="cod_profilo" property="codice" />
+        <result column="nome" property="nome" />
+        <result column="descrizione" property="descrizione" />
+    </resultMap>   
+    
+    <resultMap id="saMap" type="saentry">
+    	<result column="codein" property="codice" />
+        <result column="nomein" property="denominazione" />
+        <result column="cfein" property="codiceFiscale" />
+        <result column="idammin" property="idAmministrazione" />
+    </resultMap>   
+    
+    <resultMap id="userSysMap" type="usrsysentry">
+    	<id column="syscon" property="syscon" />
+        <result column="syspwbou" property="syspwbou" />
+    </resultMap>   
+    
+    
+    
+	<select id="getAccount" resultMap="accountMap" parameterType="hashmap">
+		SELECT syscon, 
+           syslogin, 
+           syspwd, 
+           sysute,
+           email,
+           syscf,
+           sysdisab,
+           sysab3,
+           syspwbou
+     	FROM usrsys
+		WHERE UPPER(syslogin) = #{username}
+	</select>
+	
+	<select id="getClientKey" resultType="String" parameterType="hashmap">
+		SELECT chiave
+     	FROM w_application_keys
+		WHERE clientid = #{clientId}
+	</select>	
+	
+	<select id="getCipherKey" resultType="String" parameterType="hashmap">
+		SELECT valore
+     	FROM w_config
+		WHERE UPPER(codapp) = #{codapp}
+		AND chiave = #{chiave}
+	</select>	
+	
+	
+	<select id="getUserSysInfo" resultMap="userSysMap" parameterType="hashmap">
+		SELECT syscon, syspwbou
+     	FROM usrsys
+		WHERE UPPER(syslogin) = #{username}
+	</select>	
+	
+		
+	<select id="getProfili" resultMap="profiloMap" parameterType="hashmap">
+		SELECT w_profili.cod_profilo, w_profili.nome, w_profili.descrizione
+     	FROM w_profili, w_accpro
+		WHERE w_accpro.id_account = #{id} and w_profili.cod_profilo=w_accpro.cod_profilo
+		ORDER BY w_profili.nome ASC
+	</select>
+	
+	<select id="getStazioniAppaltanti" resultMap="saMap" parameterType="hashmap">
+		SELECT uffint.codein, uffint.nomein, uffint.cfein, uffint.idammin  
+		FROM uffint, usr_ein
+		WHERE usr_ein.syscon = #{id}
+		AND usr_ein.codein = uffint.codein 
+		ORDER BY uffint.nomein ASC
+	</select>
+
+</mapper>

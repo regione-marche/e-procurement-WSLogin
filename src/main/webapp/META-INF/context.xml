@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context path="/WSLogin">
+
+	<!-- connessione al DB -->
+	<Resource name="jdbc/WSLogin" 
+		auth="Container" 
+		type="javax.sql.DataSource" 
+		driverClassName="" 
+		url="" 
+		username="" 
+		password="" 
+		autocommit="false"
+		maxActive="20" 
+		maxIdle="10" 
+		maxWait="-1" />
+		
+		
+	
+	<!-- livello di tracciatura log4j: INFO (default), DEBUG  -->
+	<Environment name="logging/level" value="${logging.level}" type="java.lang.String" override="false" />
+	
+	<!-- formato di tracciatura log4j  -->
+	<Environment name="logging/pattern" value="${logging.pattern}" type="java.lang.String" override="false" />
+
+</Context>

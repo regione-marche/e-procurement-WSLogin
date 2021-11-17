@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Appenders>
+		<RollingFile name="applicationLog" fileName="${logging.path}WSLogin.log" filePattern="${logging.path}WSLogin.log.%d{yyyy-MM-dd}">
+			<PatternLayout pattern="${logging.pattern}" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="3 MB"/>
+			</Policies>
+			<DefaultRolloverStrategy max="5"/>
+		</RollingFile>
+
+		<Console name="STDOUT" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d %5p (%c:%L) - %m%n" />
+		</Console>
+	</Appenders>
+	<Loggers>
+		<Logger name="it.maggioli.eldasoft" level="ALL" />
+		<Logger name="org.springframework" level="ERROR" />
+		<Logger name="org.glassfish.jersey" level="ERROR" />
+		<Logger name="org.codehaus.jackson" level="ERROR" />
+		<Logger name="java.sql.Connection" level="DEBUG" />
+		<Logger name="java.sql.Statement" level="DEBUG" />
+		<Logger name="java.sql.PreparedStatement" level="DEBUG" />
+		<Logger name="java.sql.ResultSet" level="DEBUG" />
+		<Root>
+			<AppenderRef ref="STDOUT" level="ERROR" />
+			<AppenderRef ref="applicationLog" level="${logging.level}" />
+		</Root>
+	</Loggers>
+</Configuration>
